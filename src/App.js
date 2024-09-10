@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavBar } from "./components/NavBar.js";
+import { NavBar } from "./components/NavBar/NavBar.js";
 import { Main } from "./components/Main.js";
 
 
@@ -55,7 +55,7 @@ const average = (arr) =>
 
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
-   
+
 
   return (
     <>
