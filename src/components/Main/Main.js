@@ -1,11 +1,10 @@
-import {ListBox} from "./MovieListPart/ListBox.js";
 import {WatchedBox} from "./WatchedBoxPart/WatchedBox.js";
 
 
-export function Main({average ,movies ,tempWatchedData}){
+export function Main({average  ,tempWatchedData ,  children}){
   return (
   <main className="main">
-        <ListBox movies={movies} />
+          {children}
         <WatchedBox average={average} tempWatchedData={tempWatchedData}/>
         
       </main>
