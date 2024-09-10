@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavBar } from "./components/NavBar/NavBar.js";
-import { Main } from "./components/Main.js";
+import { Main } from "./components/Main/Main.js";
 
 
 const tempMovieData = [

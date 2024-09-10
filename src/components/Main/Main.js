@@ -1,4 +1,4 @@
-import {ListBox} from "./Main/ListBox.js";
+import {ListBox} from "./ListBox.js";
 import {WatchedBox} from "./WatchedBox.js";
 
 
