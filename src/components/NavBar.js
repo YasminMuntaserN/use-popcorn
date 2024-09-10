@@ -1,4 +1,7 @@
-export function NavBar(){
+import { useState } from "react";
+
+export function NavBar({movies}){
+  const [query, setQuery] = useState("");
 <nav className="nav-bar">
         <div className="logo">
           <span role="img">🍿</span>
