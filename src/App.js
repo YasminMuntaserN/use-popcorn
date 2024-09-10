@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavBar } from "./components/NavBar/NavBar.js";
 import { Main } from "./components/Main/Main.js";
 import { NumResult } from "./components/NavBar/NumResult.js";
-import {Box} from "./components/Main/MovieListPart/ListBox.js";
+import {Box} from "./components/Main/Box.js";
 import {MovieList}from "./components/Main/MovieListPart/MovieList.js";
 import {WatchedSummary} from "./components/Main/WatchedBoxPart/WatchedSummary.js";
 import {WatchedMoviesList} from "./components/Main/WatchedBoxPart/WatchedMoviesList.js";
