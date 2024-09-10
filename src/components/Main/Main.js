@@ -1,5 +1,5 @@
 import {ListBox} from "./MovieListPart/ListBox.js";
-import {WatchedBox} from "./WatchedBox.js";
+import {WatchedBox} from "./WatchedBoxPart/WatchedBox.js";
 
 
 export function Main({average ,movies ,tempWatchedData}){
