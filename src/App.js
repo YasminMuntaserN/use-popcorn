@@ -72,6 +72,11 @@ export default function App() {
   const [error , setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
 
+  function handleSelectMovie(id){
+    setSelectedId(id);
+  }
+
+
   useEffect(
     function () {
       async function fetchMovies(){
@@ -118,7 +123,7 @@ export default function App() {
 
           <Box>
               {isLoading && <Loader/>}
-              {!isLoading && !error && <MovieList movies={movies}/>}
+              {!isLoading && !error && <MovieList movies={movies} onSelectMovie={handleSelectMovie}/>}
               {error && <ErrorMessage message={error}/>}
           </Box>
         
