@@ -76,6 +76,9 @@ export default function App() {
     setSelectedId(id);
   }
 
+  function handleCloseMovie(id){
+    setSelectedId(null);
+  }
 
   useEffect(
     function () {
@@ -130,7 +133,9 @@ export default function App() {
           <Box >
             {
               selectedId ?
-                <MovieDetails selected={selectedId}/>
+                <MovieDetails
+                  selected={selectedId}
+                  onCloseMovie ={handleCloseMovie}/>
               :
               <>
               <WatchedSummary average={average} watched={watched} />
