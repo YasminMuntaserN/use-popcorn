@@ -79,12 +79,16 @@ export default function App() {
         fetch(`http://www.omdbapi.com/? 
         apikey=${KEY}&s=${query}`);
 
+        // handle if there is no internt connection
         if(!res.ok) throw new Error("something went wrong with fetching movies");
 
         const data = await res.json(); 
+
+        // handle if there is no data returnd back
+        if(!data.response)throw new Error(" movie not found");
+
         setMovies(data.Search);
     } catch(err) {
-    console.error(err.message);
     setError(err.message);
     }finally{
       setIsLoading(false);
@@ -101,10 +105,6 @@ export default function App() {
       <Main>
 
           <Box>
-            {/* {
-            isLoading ?
-            <Loader/> : <MovieList movies={movies}/>  
-            } */}
               {isLoading && <Loader/>}
               {!isLoading && !error && <MovieList movies={movies}/>}
               {error && <ErrorMessage message={error}/>}
