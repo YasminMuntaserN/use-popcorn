@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavBar } from "./components/NavBar/NavBar.js";
 import { Main } from "./components/Main/Main.js";
 import { NumResult } from "./components/NavBar/NumResult.js";
@@ -6,6 +6,7 @@ import {Box} from "./components/Main/Box.js";
 import {MovieList}from "./components/Main/MovieListPart/MovieList.js";
 import {WatchedSummary} from "./components/Main/WatchedBoxPart/WatchedSummary.js";
 import {WatchedMoviesList} from "./components/Main/WatchedBoxPart/WatchedMoviesList.js";
+import {Loader} from "./components/Loader.js";
 
 
 const tempMovieData = [
@@ -55,29 +56,42 @@ const tempWatchedData = [
   },
 ];
 
+const KEY ="http://www.omdbapi.com/?i=tt3896198&apikey=a4872685";
+
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+  const [isLoading , setIsLoading] = useState(false);
 
+  const query ="interstellar";
+
+  useEffect(function(){
+    async function fetchMovies(){
+      setIsLoading(true);
+      const res =await 
+        fetch(`http://www.omdbapi.com/? 
+        apikey=${KEY}&s=${query}`);
+        const data = await res.json(); 
+        setMovies(data.Search);
+        console.log(data.Search);
+        setIsLoading(false);
+    }
+    fetchMovies();
+  } ,[])
   return (
     <>
       <NavBar>
             <NumResult movies={movies}/>
       </NavBar>
+      
       <Main>
-        {/* <Box element={ <MovieList movies={movies}/> } />
-        <Box element={ 
-          <>
-            <WatchedSummary average={average} watched={watched} />
-            <WatchedMoviesList watched={watched} />
-          </>
-        }/> */}
 
           <Box>
-            <MovieList movies={movies}/> 
+            {isLoading ? <Loader/> : <MovieList movies={movies}/>  
+            }
           </Box>
         
           <Box >
