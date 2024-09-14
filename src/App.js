@@ -84,6 +84,12 @@ export default function App() {
     setWatched(watched =>[...watched ,movie]);
   }
 
+  function handleDeleteWatched(id){
+    setWatched(watched =>watched.filter(movie => 
+      movie.id !== id 
+    ) )
+  };
+
   useEffect(
     function () {
       async function fetchMovies(){
@@ -146,7 +152,9 @@ export default function App() {
               :
               <>
               <WatchedSummary average={average} watched={watched} />
-              <WatchedMoviesList watched={watched} />
+              <WatchedMoviesList
+                watched={watched} 
+                onDeleteWatched={handleDeleteWatched}/>
               </>
             }
           </Box> 
