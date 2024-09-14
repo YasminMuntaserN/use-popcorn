@@ -80,6 +80,10 @@ export default function App() {
     setSelectedId((selectedId) => (id === selectedId) ? null :id);
   }
 
+  function handleAddWatched(movie){
+    setWatched(watched =>[...watched ,movie]);
+  }
+
   useEffect(
     function () {
       async function fetchMovies(){
@@ -134,8 +138,11 @@ export default function App() {
             {
               selectedId ?
                 <MovieDetails
-                  selected={selectedId}
-                  onCloseMovie ={handleCloseMovie}/>
+                  selectedId={selectedId}
+                  onCloseMovie ={handleCloseMovie}
+                  KEY={KEY}
+                  OnAddWatched={handleAddWatched}
+                  />
               :
               <>
               <WatchedSummary average={average} watched={watched} />
