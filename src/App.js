@@ -6,6 +6,7 @@ import {Box} from "./components/Main/Box.js";
 import {MovieList}from "./components/Main/MovieListPart/MovieList.js";
 import {WatchedSummary} from "./components/Main/WatchedBoxPart/WatchedSummary.js";
 import {WatchedMoviesList} from "./components/Main/WatchedBoxPart/WatchedMoviesList.js";
+import {MovieDetails} from "./components/Main/WatchedBoxPart/MovieDetails.js";
 import {Loader} from "./components/Loader.js";
 import {ErrorMessage} from "./components/ErrorMessage.js";
 
@@ -64,40 +65,47 @@ const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 export default function App() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("interstellar");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading , setIsLoading] = useState(false);
   const [error , setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
-  const tempQuery ="interstellar";
+  useEffect(
+    function () {
+      async function fetchMovies(){
+        try{
+            setIsLoading(true);
+            setError('');
+            const res =await 
+              fetch(`http://www.omdbapi.com/? 
+              apikey=${KEY}&s=${query}`);
 
-  useEffect(function () {
-    async function fetchMovies(){
-    try{
-      setIsLoading(true);
-      setError('');
-      const res =await 
-        fetch(`http://www.omdbapi.com/? 
-        apikey=${KEY}&s=${query}`);
+              // handle if there is no internt connection
+              if(!res.ok)
+                  throw new Error("something went wrong with fetching movies");
 
-        // handle if there is no internt connection
-        if(!res.ok) throw new Error("something went wrong with fetching movies");
+              const data = await res.json(); 
 
-        const data = await res.json(); 
+              // handle if there is no data returnd back
+              if(!data.Response)throw new Error(" movie not found");
 
-        // handle if there is no data returnd back
-        if(!data.response)throw new Error(" movie not found");
+              setMovies(data.Search);
+          } catch(err) {
+          setError(err.message);
+          } finally {
+            setIsLoading(false);
+          }
+        }
+          if(query.length < 3){
+            setMovies([]);
+            setError('');
+            return;
+          }
 
-        setMovies(data.Search);
-    } catch(err) {
-    setError(err.message);
-    }finally{
-      setIsLoading(false);
-    }
-  }
-    fetchMovies();
-  } ,[query]);
+          fetchMovies();
+        } ,[query]);
 
 
   return (
@@ -115,8 +123,15 @@ export default function App() {
           </Box>
         
           <Box >
-          <WatchedSummary average={average} watched={watched} />
-          <WatchedMoviesList watched={watched} />
+            {
+              selectedId ?
+                <MovieDetails selected={selectedId}/>
+              :
+              <>
+              <WatchedSummary average={average} watched={watched} />
+              <WatchedMoviesList watched={watched} />
+              </>
+            }
           </Box> 
       </Main>
     </>
