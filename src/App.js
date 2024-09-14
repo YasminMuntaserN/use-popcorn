@@ -142,7 +142,7 @@ export default function App() {
                   onCloseMovie ={handleCloseMovie}
                   KEY={KEY}
                   OnAddWatched={handleAddWatched}
-                  />
+                  watched={watched}/>
               :
               <>
               <WatchedSummary average={average} watched={watched} />

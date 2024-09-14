@@ -2,20 +2,24 @@ import { useEffect, useState } from "react"
 import { StartRating } from "../../StartRating.js";
 import {Loader} from "../../Loader.js";
 
-export function MovieDetails({selectedId ,
+export function MovieDetails({
+  selectedId ,
   onCloseMovie ,
   KEY,
-  OnAddWatched}){
+  OnAddWatched,
+  watched}){
   
     const [movie ,setMovies] =useState({}); 
-  const [IsLoading ,setIsLoading] =useState({}); 
+    const [IsLoading ,setIsLoading] =useState({}); 
+    const [userRating ,setUserRating] =useState('');
+    const isWatched =watched.map(movie =>movie.imdbID).includes(selectedId);
 
   const {
     Title : title ,
     Year : year ,
     Poster: poster ,
     RunTime : runTime ,
-    ImdbRating : imdbRating ,
+    imdbRating ,
     Plot : plot ,
     Released:released , 
     Actors:actors ,
@@ -41,16 +45,20 @@ export function MovieDetails({selectedId ,
 
 function handleAdd(){
   console.log(runTime.split(' ').at(0));
-  const newMovie ={
+  const newMovie = {
     imdbID:selectedId ,
     title ,
     year,
     poster,
     imdbRating :Number(imdbRating),
-    runTime:Number(runTime.split(' ').at(0))
+    runTime:Number(runTime.split(" ").at(0)),
+    userRating
   };
+
   OnAddWatched(newMovie);
+  onCloseMovie();
 }
+
   return (
     <div className="details">
     {IsLoading ? <Loader /> : 
@@ -72,9 +80,20 @@ function handleAdd(){
 
     <section >
       <div className="rating">
-        <StartRating maxRating={10} size={24}/>
-        <button className="btn-Add"
-        onClick={handleAdd}>Add To List</button>
+        {!isWatched ? 
+        <>
+            <StartRating
+              maxRating={10}
+              size={24}
+              onSetRating={setUserRating}/>
+
+            {userRating >0 && ( <button className="btn-Add"
+            onClick={handleAdd}>Add To List</button>
+            )}
+        </>
+        :
+        <p>You rated this movie</p>
+      }
       </div>
       <p>
         <em>{plot}</em>
