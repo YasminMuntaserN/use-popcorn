@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { StartRating } from "../../StartRating.js";
 
 export function MovieDetails({selectedId ,onCloseMovie ,KEY}){
   const [movie ,setMovies] =useState({}); 
@@ -43,12 +44,15 @@ export function MovieDetails({selectedId ,onCloseMovie ,KEY}){
     </header>
 
     <section >
+      <div className="rating">
+        <StartRating maxRating={10} size={24}/>
+      </div>
       <p>
         <em>{ploat}</em>
       </p>
       <p>Starring {actors}</p>
       <p>Directed by  {director}</p>
-     </section>
+    </section>
     </div>
 
   )
