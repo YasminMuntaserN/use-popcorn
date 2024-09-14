@@ -4,11 +4,11 @@ import { Logo } from "./Logo";
 
 
 
-export function NavBar({children}){
+export function NavBar({children ,query ,setQuery}){
   return (
     <nav className="nav-bar">
             <Logo/>
-            <Search/>
+            <Search  query={query} setQuery={setQuery}/>
             {children}
       </nav>
   );
