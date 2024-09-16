@@ -16,7 +16,8 @@ export function StartRating({
   size=48,
   color ="#fcc419" ,
   messages=[] ,
-  defaultRating =0
+  defaultRating =0,
+  onSetRating=0
 }){
   const [rating , setRating] =useState(defaultRating);
   const [tempRating , setTempRating] =useState(0);
@@ -30,6 +31,7 @@ export function StartRating({
 
   function handleRating(rating){
     setRating(rating);  
+    onSetRating(rating);
   }
   return ( 
   <div style={containerStyle}>

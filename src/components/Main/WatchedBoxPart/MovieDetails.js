@@ -46,20 +46,23 @@ export function MovieDetails({
   } ,[KEY , selectedId]
 );
 
-function handleAdd(){
-  console.log(runTime.split(' ').at(0));
-  const newMovie = {
-    imdbID:selectedId ,
-    title ,
-    year,
-    poster,
-    imdbRating :Number(imdbRating),
-    runTime:Number(runTime.split(" ").at(0)),
-    userRating
-  };
+console.log(movie);
+function handleAdd() {
+    const newMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runTime: Number((
+        "51 min").split(' ').at(0)),
+      userRating
+    };
 
-  OnAddWatched(newMovie);
-  onCloseMovie();
+    console.log('New Movie Object:', newMovie);
+    console.log(runTime);
+    OnAddWatched(newMovie);
+    onCloseMovie();
 }
 
   return (
