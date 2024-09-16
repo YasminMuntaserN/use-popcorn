@@ -46,7 +46,16 @@ export function MovieDetails({
   } ,[KEY , selectedId]
 );
 
-console.log(movie);
+useEffect(function (){
+  if(!title)return;
+  document.title =`Movie | ${title}`;
+  
+  return function(){
+    document.title =`usePopcorn`;
+  };
+},[title])
+
+
 function handleAdd() {
     const newMovie = {
       imdbID: selectedId,
