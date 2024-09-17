@@ -65,19 +65,25 @@ const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 export default function App() {
-  const [query, setQuery] = useState("interstellar");
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading , setIsLoading] = useState(false);
   const [error , setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+
+  const [watched, setWatched] = useState(function(){
+    // this function will be executed once on the initail render
+    const storedValues =localStorage.getItem("watched");
+    return JSON.parse(storedValues);
+  });
+
 
   function handleSelectMovie(id){
     setSelectedId(id);
   }
 
   function handleCloseMovie(id){
-    setSelectedId((selectedId) => (id === selectedId) ? null :id);
+    setSelectedId(null);
   }
 
   function handleAddWatched(movie){
@@ -90,50 +96,60 @@ export default function App() {
     ) )
   };
 
-  useEffect(
-    function () {
-      const controller =new AbortController();
-      async function fetchMovies(){
-        try{
-            setIsLoading(true);
-            setError('');
-            const res =await 
-              fetch(`http://www.omdbapi.com/? 
-              apikey=${KEY}&s=${query} `,{signal:controller.signal});
-
-              // handle if there is no internt connection
-              if(!res.ok)
-                  throw new Error("something went wrong with fetching movies");
-
-              const data = await res.json(); 
-
-              // handle if there is no data returnd back
-              if(!data.Response)throw new Error(" movie not found");
-
-              setMovies(data.Search);
-              setError("");
-          } catch(err) {
-            if(err.name !== 'AbortError'){
-                setError(err.message);
-            }
-
-          } finally {
-            setIsLoading(false);
-          }
+  useEffect(function () {
+    // Create AbortController to cancel fetch if needed
+    const controller = new AbortController();
+  
+    async function fetchMovies() {
+      try {
+        setIsLoading(true);  // Set loading state
+        setError('');        // Reset error state
+  
+        // Fetch movies from API
+        const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`, {
+          signal: controller.signal
+        });
+  
+        // Handle fetch errors
+        if (!res.ok) throw new Error("Fetch failed");
+  
+        const data = await res.json();
+  
+        // Handle no data returned
+        if (!data.Response) throw new Error("Movie not found");
+  
+        setMovies(data.Search);  // Update movies state
+        setError('');            // Reset error state
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          setError(err.message);  // Set error state
         }
-          if(query.length < 3){
-            setMovies([]);
-            setError('');
-            return;
-          }
-
-          fetchMovies();
-
-          return function(){
-            controller.abort(); 
-          };
-        } ,[query]);
-
+      } finally {
+        setIsLoading(false);  // End loading state
+      }
+    }
+  
+    // If query is too short, reset states and exit
+    if (query.length < 3) {
+      setMovies([]);
+      setError('');
+      return;
+    }
+  
+    handleCloseMovie();  // Close movie details if open
+    fetchMovies();       // Fetch movies
+  
+    // Cleanup function to abort fetch if component unmounts or query changes
+    return () => {
+      controller.abort();
+    };
+  }, [query]); 
+  
+  useEffect(function () {
+    // Save watched movies to local storage
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]); 
+  
 
   return (
     <>
